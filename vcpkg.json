@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "dependencies": [
+    "spdlog",
+    "simpleini",
+    "detours"
+  ],
+  "builtin-baseline": "f56238700757aa05975e41fa835739c632810f3f",
+  "vcpkg-configuration": {
+    "registries": [
+      {
+        "kind": "git",
+        "baseline": "4464251a08810053868f982a09db1f8cec4d9ee0",
+        "repository": "https://github.com/ThirdEyeSqueegee/vcpkg-ports",
+        "packages": [
+          "spdlog"
+        ]
+      }
+    ]
+  }
+}
