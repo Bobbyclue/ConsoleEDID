@@ -10,6 +10,11 @@ namespace Hooks
     {
         std::string newCommand = command;
         if (command) {
+            int i = newCommand.length();
+            while (newCommand[i]) {
+                i--;
+                newCommand[i] = putchar(tolower(newCommand[i]));
+            }
             size_t begin = newCommand.find_first_of(" ", 0) + 1;
             while (begin && begin < newCommand.size()) {
                 size_t end = newCommand.find(" ", begin);
@@ -18,7 +23,8 @@ namespace Hooks
                 }
                 std::string  substr  = newCommand.substr(begin, end - begin);
                 RE::TESForm* newForm = RE::TESForm::LookupByEditorID(substr);
-                if (newForm) {
+                size_t       exclusion = newCommand.find("help", begin - 5);
+                if (newForm && exclusion >= begin) {
                     char buffer[8];
                     char *stringID = itoa(newForm->GetFormID(), buffer, 16);
                     logger::info("Replaced {} with {}", substr, stringID);
