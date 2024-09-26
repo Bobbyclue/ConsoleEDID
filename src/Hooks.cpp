@@ -11,20 +11,21 @@ namespace Hooks
         std::string newCommand = command;
         if (command) {
             size_t begin = newCommand.find_first_of(" ", 0) + 1;
-            if (begin) {
-                while (size_t end = newCommand.find(" ", begin)) {
-                    if (!end) {
-                        end = newCommand.size();
-                    }
-                    std::string  substr  = newCommand.substr(begin, end - begin);
-                    RE::TESForm* newForm = RE::TESForm::LookupByEditorID(substr);
-                    if (newForm) {
-                        char buffer[8];
-                        auto stringID = itoa(newForm->GetFormID(), buffer, 16);
-                        logger::info("Replaced {} with {}", substr, stringID);
-                        newCommand.replace(begin, end - begin, stringID);
-                    }
-                    begin = end;
+            while (begin && begin < newCommand.size()) {
+                size_t end = newCommand.find(" ", begin);
+                if (end == newCommand.npos || !end) {
+                    end = newCommand.size();
+                }
+                std::string  substr  = newCommand.substr(begin, end - begin);
+                RE::TESForm* newForm = RE::TESForm::LookupByEditorID(substr);
+                if (newForm) {
+                    char buffer[8];
+                    char *stringID = itoa(newForm->GetFormID(), buffer, 16);
+                    logger::info("Replaced {} with {}", substr, stringID);
+                    newCommand.replace(begin, end - begin, stringID);
+                }
+                else {
+                    begin = end + 1;
                 }
             }
         }
